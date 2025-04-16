@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .card h2 {
+      margin-bottom: 20px;
+    }
+    .btn {
+      width: 100px;
+    }
+    .btn + .btn {
+      margin-left: 10px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <title>Registration</title>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <h2>Registration form</h2>
+      <form action="#" id="registerForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter a name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email id</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter an email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter a password">
+        </div>
+        <div class="text-center">
+          <button type="button" onclick="saveData()" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-warning">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function saveData() {
+      let name = document.getElementById("name").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value.trim();
+
+      // Validation checks
+      if (!name || !email || !password) {
+        alert("All fields are required.");
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        alert("Invalid email format.");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+      }
+
+      // Duplicate check
+      let user_records = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (user_records.some((user) => user.email === email)) {
+        alert("Email already registered.");
+      } else {
+        user_records.push({ name, email, password });
+        localStorage.setItem("users", JSON.stringify(user_records));
+        alert("Registration successful!");
+        document.getElementById("registerForm").reset();
+      }
+    }
+  </script>
+</body>
+</html>
